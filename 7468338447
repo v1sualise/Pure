@@ -1,3 +1,5 @@
+--⛏️ Dig to Earth's CORE!
+
 local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -5,7 +7,7 @@ local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))
 local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 
 local Window = Library:CreateWindow({
-    Title = 'Pure | Dig to Earths CORE!',
+    Title = 'Pure | ⛏️ Dig to Earth's CORE!',
     Center = true,
     AutoShow = true,
     TabPadding = 7,
@@ -261,7 +263,7 @@ SaveManager:SetLibrary(Library)
 SaveManager:IgnoreThemeSettings()
 SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
 ThemeManager:SetFolder('Pure')
-SaveManager:SetFolder('Pure/81440632616906')
+SaveManager:SetFolder('Pure/7468338447')
 SaveManager:BuildConfigSection(Tabs['UI Settings'])
 ThemeManager:ApplyToTab(Tabs['UI Settings'])
 SaveManager:LoadAutoloadConfig()
