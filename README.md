@@ -1,0 +1,3 @@
+```lua
+loadstring soon
+```
