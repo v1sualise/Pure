@@ -6,4 +6,4 @@ end
 
 local getgame = game.PlaceId
 
-loadstring(game:HttpGet('https://raw.githubusercontent.com/v1sualise/Pure/refs/heads/main/' .. getgame))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/heads/main/' .. getgame))()
