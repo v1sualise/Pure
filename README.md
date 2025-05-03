@@ -2,6 +2,7 @@ Hey everyone, just a quick heads-up — **I'm not the best script developer** ou
 
 
 # Pure.Lua Loader
+*keyless forever because we all hate getting keys*
 ```lua
 loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/heads/main/loadstring'))()
 ```
