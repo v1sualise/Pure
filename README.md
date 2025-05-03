@@ -3,5 +3,5 @@ Hey everyone, just a quick heads-up — **I'm not the best script developer** ou
 
 # Pure.Lua Loader
 ```lua
-loadstring(game:HttpGet('https://raw.githubusercontent.com/v1sualise/Pure/refs/heads/main/loadstring'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/heads/main/loadstring'))()
 ```
