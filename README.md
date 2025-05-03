@@ -10,4 +10,4 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/
 ## Contributors
 - wearebased: Main developer.
 - kingstewiereal: functionality and helping with errors.
-- y0urn0rmalguy: Mentall Support.
+- Y0urN0malGuy: Mentall Support.
