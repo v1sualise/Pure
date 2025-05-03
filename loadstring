@@ -1,0 +1,9 @@
+-- Loader
+
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local getgame = game.PlaceId
+
+loadstring(game:HttpGet('https://raw.githubusercontent.com/v1sualise/Pure/refs/heads/main/' .. getgame))()
