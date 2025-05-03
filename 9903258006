@@ -1,0 +1,627 @@
+--Farmstead 🐔 / 9903258006
+
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+
+local Window = Library:CreateWindow({
+    Title = 'Pure | Farmstead 🐔',
+    Center = true,
+    AutoShow = true,
+    TabPadding = 7,
+    MenuFadeTime = 0
+})
+
+
+
+local Tabs = {
+    Main = Window:AddTab('automatic'),
+    ['local'] = Window:AddTab('teleport'),
+    ['misc'] = Window:AddTab('miscellaneous'),
+    ['UI Settings'] = Window:AddTab('settings'),
+}
+
+
+
+
+
+local AutoForge = Tabs.Main:AddLeftGroupbox('Auto Foraging')
+
+
+
+
+-- Forge
+
+
+
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local pickupRemote = ReplicatedStorage.Relay.Server.PickupItem
+
+local pickupDelay = 0.1
+
+local collectibleNames = {}
+
+-- Master toggle flag
+local collecting = false
+
+-- List of all items and their default toggle state
+local itemList = {
+    "Fossil",
+    "Oak Sticks",
+    "Birch Sticks",
+    "Pink Cherry Sticks",
+    "Cedar Sticks",
+    "Fir Sticks",
+    "Blue Mushroom Cluster",
+    "Red Mushroom Cluster",
+    "Yellow Flowers",
+    "Orange Flowers",
+    "Blue Flowers",
+    "Wild Cactus",
+    "Wild Blueberry",
+    "Wild Strawberry",
+    "Wild Cranberry",
+}
+
+AutoForge:AddToggle('AutoForge', {
+    Text = 'Auto Foraging',
+    Default = false,
+    Tooltip = 'Automatically collects all items that are loaded',
+
+    Callback = function(Value)
+        collecting = Value
+        if collecting then
+            task.spawn(function()
+                while collecting do
+                    local foundAny = false
+                    for _, item in pairs(game.Workspace.LoadedBlocks:GetChildren()) do
+                        if not collecting then break end
+                        if collectibleNames[item.Name] then
+                            local position = item:GetAttribute("VoxelPosition")
+                            if position then
+                                pickupRemote:InvokeServer(item.Name, position)
+                                task.wait(pickupDelay)
+                                foundAny = true
+                            end
+                        end
+                    end
+                    -- Optional: wait more if nothing found
+                    if not foundAny then
+                        task.wait(2)
+                    end
+                end
+            end)
+        end
+    end
+})
+
+AutoForge:AddDivider()
+
+AutoForge:AddSlider('PickupDelaySlider', {
+    Text = 'Pickup Delay (sec)',
+    Default = 0.1,
+    Min = 0,
+    Max = 3,
+    Rounding = 0.1,
+    Compact = false,
+
+    Callback = function(Value)
+        pickupDelay = Value
+    end
+})
+
+AutoForge:AddDivider()
+
+
+
+
+
+
+
+for _, itemName in ipairs(itemList) do
+    collectibleNames[itemName] = false -- Default off
+
+    AutoForge:AddToggle('Toggle_' .. itemName, {
+        Text = itemName,
+        Default = false,
+        Tooltip = 'Toggle to collect ' .. itemName,
+
+        Callback = function(Value)
+            collectibleNames[itemName] = Value
+        end
+    })
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--local LoadedBlocksPath = game.Workspace.loadedblocks:GetChildren()
+
+
+
+--[[
+
+change the VoxelPositon to 0, 0m
+
+local ohString1 = "item"
+local ohVector32 = Vector3.new(0, 0, 0)
+
+game:GetService("ReplicatedStorage").Relay.Server.PickupItem:InvokeServer(ohString1, ohVector32)
+
+
+
+Things from game.workspace.LoadedBlocks to replace for items the rest are not collecteble
+
+ Fossil, Oak Sticks, Birch Sticks, Pink Cherry Sticks, Cedar Sticks, Fir Sticks
+ Blue Mushroom Cluster, Red Mushroom Cluster, 
+ Yellow Flowers, Orange Flowers
+ Wild Cactus, 
+
+use of the models VoxelPosiition needed for remote
+
+
+
+
+local ohInstance1 = game:GetService("Players").LocalPlayer
+
+game:GetService("ReplicatedStorage").Relay.Server.VisitFarm:InvokeServer(ohInstance1)
+
+
+
+local Farms = game.workspace.Farms:GetChildren()
+
+local playerID = game.localPlayer.PlayerID
+
+if Farms.Owner = playerID then
+    
+
+]]
+
+
+
+--Auto Harvest
+local AutoHarvest = Tabs.Main:AddRightGroupbox('Auto Harvest')
+
+
+--[[
+local ohVector31 = Vector3.new(29, 1, 51) --using custom Voxel Posistioning like before
+
+game:GetService("ReplicatedStorage").Relay.Blocks.HarvestCrop:InvokeServer(ohVector31)
+--]]
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local harvestRemote = ReplicatedStorage.Relay.Blocks.HarvestCrop
+
+local harvestDelay = 0.1
+local harvesting = false
+local cropTypes = {}
+
+-- Crop list (all supported crops)
+local cropList = {
+    "Wheat", "Corns", "Cabbage", "Hot Pepper", "Watermelon", "Tomato", "Carrot", "Pea", "Grass",
+    "Blueberry", "Potato", "Green Bean", "Garlic", "Brocolli", "Coffee Bean", "Cauliflower", "Squash",
+    "Beet", "Strawberrry", "Apple Tree", "Cranberry", "Pear Tree", "Cherry Tree", "Grape", "Rice",
+    "Artichoke", "Turnip", "Onion", "Pumpkin", "Cacao", "Coconut Tree", "Mango Tree"
+}
+
+AutoHarvest:AddToggle('AutoHarvestToggle', {
+    Text = 'Auto Harvest',
+    Default = false,
+    Tooltip = 'Automatically harvests selected crops',
+
+    Callback = function(Value)
+        harvesting = Value
+        if harvesting then
+            task.spawn(function()
+                while harvesting do
+                    local foundAny = false
+                    for _, block in pairs(game.Workspace.LoadedBlocks:GetChildren()) do
+                        if not harvesting then break end
+                        if cropTypes[block.Name] then
+                            local position = block:GetAttribute("VoxelPosition")
+                            if position then
+                                harvestRemote:InvokeServer(position)
+                                task.wait(harvestDelay)
+                                foundAny = true
+                            end
+                        end
+                    end
+                    if not foundAny then
+                        task.wait(2)
+                    end
+                end
+            end)
+        end
+    end
+})
+AutoHarvest:AddDivider()
+
+AutoHarvest:AddSlider('HarvestDelaySlider', {
+    Text = 'Harvest Delay (sec)',
+    Default = 0.1,
+    Min = 0,
+    Max = 5,
+    Rounding = 1,
+    Compact = false,
+
+    Callback = function(Value)
+        harvestDelay = Value
+    end
+})
+
+AutoHarvest:AddDivider()
+
+-- Create toggles for each crop
+for _, cropName in ipairs(cropList) do
+    cropTypes[cropName] = false
+
+    AutoHarvest:AddToggle('Toggle_' .. cropName, {
+        Text = cropName,
+        Default = false,
+        Tooltip = 'Toggle to harvest ' .. cropName,
+
+        Callback = function(Value)
+            cropTypes[cropName] = Value
+        end
+    })
+end
+
+AutoHarvest:AddDivider()
+
+
+
+local InFoGroup = Tabs.Main:AddLeftGroupbox('❗Important❗')
+
+InFoGroup:AddLabel('After any Changes Restart')
+InFoGroup:AddLabel('the function to update')
+
+
+
+
+-- Teleport
+local InFoGroup = Tabs['local']:AddLeftGroupbox('Quick Teleport')
+
+
+
+
+InFoGroup:AddButton({
+    Text = 'Town',
+    Func = function()
+        -- This script was generated by Hydroxide's RemoteSpy: https://github.com/Upbolt/Hydroxide
+
+        local ohString1 = "Town"
+
+        game:GetService("ReplicatedStorage").Relay.Server.VisitFarm:InvokeServer(ohString1)
+    end,
+    DoubleClick = true,
+    Tooltip = 'Teleports to Destiny'
+})
+
+InFoGroup:AddButton({
+    Text = 'Your Farm',
+    Func = function()
+        local ohInstance1 = game:GetService("Players").LocalPlayer
+        game:GetService("ReplicatedStorage").Relay.Server.VisitFarm:InvokeServer(ohInstance1)
+    end,
+    DoubleClick = true,
+    Tooltip = 'Teleports to Destiny'
+})
+
+local InFoGroup = Tabs['local']:AddRightGroupbox('other players Farms')
+
+local targetplayertotp2
+
+InFoGroup:AddDropdown('Playershitfarm', {
+    SpecialType = 'Player',
+    Text = 'select a player',
+    Tooltip = 'Select a player to teleport to', -- Information shown when you hover over the dropdown
+
+    Callback = function(Value)
+        targetplayertotp2 = Value
+    end
+})
+
+InFoGroup:AddButton({
+    Text = 'Teleport to Player Farm',
+    Func = function()    
+        local ohInstance1 = game:GetService("Players")[targetplayertotp2]
+
+        game:GetService("ReplicatedStorage").Relay.Server.VisitFarm:InvokeServer(ohInstance1)
+    end,
+    DoubleClick = true,
+    Tooltip = 'Teleports to Players Farm'
+})
+
+
+
+
+
+
+
+
+
+-- Auto Buy
+
+local RemoteBuy = Tabs['misc']:AddLeftGroupbox('remote buy')
+
+-- Variables
+local stringremotebuy = "ShopItem"
+local IDforseed2buy = nil
+local ammount4buy = 1
+local nillikenothinggg = nil
+local whatdoesbooleanmean = true
+
+-- Static list of seed names and their IDs
+local seedOptions = {
+    "Wheat",
+    "Corn",
+    "Cabbage",
+    "Hot Peppers",
+    "Watermelon",
+    "Tomato",
+    "Carrot",
+    "Pea",
+    "Blueberry",
+    "Potato",
+    "Green Bean",
+    "Garlic",
+    "Broccoli",
+    "Coffee Bean",
+    "Cauliflower",
+    "Kale",
+    "Squash",
+    "Beet",
+    "Strawberry",
+    "Apple Tree",
+    "Cranberry",
+    "Pear Tree",
+    "Cherry Tree"
+}
+
+local seedIDs = {
+    ["Wheat"] = 202,
+    ["Corn"] = 203,
+    ["Cabbage"] = 204,
+    ["Hot Peppers"] = 209,
+    ["Watermelon"] = 208,
+    ["Tomato"] = 209,
+    ["Carrot"] = 212,
+    ["Pea"] = 211,
+    ["Blueberry"] = 210,
+    ["Potato"] = 214,
+    ["Green Bean"] = 215,
+    ["Garlic"] = 216,
+    ["Broccoli"] = 220,
+    ["Coffee Bean"] = 217,
+    ["Cauliflower"] = 219,
+    ["Kale"] = 218,
+    ["Squash"] = 221,
+    ["Beet"] = 223,
+    ["Strawberry"] = 222,
+    ["Apple Tree"] = 213,
+    ["Cranberry"] = 232,
+    ["Pear Tree"] = 225,
+    ["Cherry Tree"] = 235
+}
+
+-- Dropdown UI
+RemoteBuy:AddDropdown('WhatSeed2Buy', {
+    Values = seedOptions,
+    Default = 1,
+    Multi = false,
+    Text = 'Seed',
+    Tooltip = 'Select a seed to buy',
+    Callback = function(selectedSeed)
+        IDforseed2buy = seedIDs[selectedSeed]
+        print("Selected:", selectedSeed, "ID:", IDforseed2buy)
+    end
+})
+
+-- Slider for amount
+RemoteBuy:AddInput('amount4buy', {
+    Default = '1',
+    Numeric = true, -- true / false, only allows numbers
+    Finished = false, -- true / false, only calls callback when you press enter
+
+    Text = 'amount',
+    Tooltip = '!ONLY 1 - 99!', -- Information shown when you hover over the textbox
+
+    Placeholder = '1 - 99', -- placeholder text when the box is empty
+    -- MaxLength is also an option which is the max length of the text
+
+    Callback = function(Value)
+        ammount4buy = Value
+    end
+})
+
+
+
+
+-- Button to buy
+RemoteBuy:AddButton({
+    Text = 'Buy selected',
+    Func = function()
+        if IDforseed2buy then
+            game:GetService("ReplicatedStorage").Relay.Market.PurchaseProduct:InvokeServer(
+                stringremotebuy,
+                IDforseed2buy,
+                ammount4buy,
+                nillikenothinggg,
+                whatdoesbooleanmean
+            )
+        else
+            warn("Please select a seed first.")
+        end
+    end,
+    DoubleClick = false,
+    Tooltip = 'Buys the selected seed'
+})
+
+
+
+
+
+--[[
+
+local stringremotebuy = "ShopItem"
+local IDforseed2buy =  -- number id for buy
+local ammount4buy = "1" -- how much 
+local nillikenothinggg = nil
+local whatdoesbooleanmean = true
+
+game:GetService("ReplicatedStorage").Relay.Market.PurchaseProduct:InvokeServer(stringremotebuy, IDforseed2buy, ammount4buy, nillikenothinggg, whatdoesbooleanmean)
+
+
+
+
+]]--
+
+
+
+
+-- Auto Mine
+local TabBox = Tabs['misc']:AddRightTabbox()
+
+local Tab1 = TabBox:AddTab('Mine')
+local Tab2 = TabBox:AddTab('Chop')
+
+
+local Toggles = {}
+local SelectedOres = {
+    ["Small Boulder"] = false,
+    ["Copper Ore"] = false,
+    ["Gold Ore"] = false
+}
+
+-- Mining function
+function startAutoMine()
+    task.spawn(function()
+        while AutoMineEnabled do
+            for _, block in pairs(workspace:WaitForChild("LoadedBlocks"):GetChildren()) do
+                if block:IsA("Model") or block:IsA("Part") then
+                    local oreName = block.Name
+                    if SelectedOres[oreName] then
+                        local voxelPos = block:GetAttribute("VoxelPosition")
+                        if typeof(voxelPos) == "Vector3" then
+                            -- Mine the block
+                            game:GetService("ReplicatedStorage").Relay.Blocks.MineBlock:InvokeServer(voxelPos)
+                            task.wait(Minedelay) -- Adjust as needed
+                        end
+                    end
+                end
+            end
+            task.wait(1) -- Delay between each scan
+        end
+    end)
+end
+
+Tab1:AddToggle("AutoMine", {
+    Text = "Auto Mine",
+    Default = false,
+    Tooltip = "Automatically mines selected rocks",
+    Callback = function(Value)
+        AutoMineEnabled = Value
+        if Value then
+            startAutoMine()
+        end
+    end
+})
+
+Tab1:AddDivider()
+
+Tab1:AddSlider('Slider4Mine', {
+    Text = 'Pickup Delay (sec)',
+    Default = 0.1,
+    Min = 0,
+    Max = 3,
+    Rounding = 1,
+    Compact = false,
+
+    Callback = function(Value)
+        Minedelay = Value
+    end
+})
+
+Tab1:AddDivider()
+
+
+-- Create toggles for each ore type
+for oreName, _ in pairs(SelectedOres) do
+    Tab1:AddToggle(oreName, {
+        Text = oreName,
+        Default = false,
+        Tooltip = "Enable mining for " .. oreName,
+        Callback = function(Value)
+            SelectedOres[oreName] = Value
+        end
+    })
+end
+
+-- AutoMine Toggle
+local AutoMineEnabled = false
+Minedelay = 0.1
+
+
+
+
+
+
+
+
+
+
+
+--[[
+
+USING A CUSTOM ATTERIBTURSE VECORTS FOR POSISION
+
+    GetAttribute("VoxelPosition")
+
+
+local ohVector31 = Vector3.new(-7, 1, -11) -- vexol positsioning
+
+game:GetService("ReplicatedStorage").Relay.Blocks.MineBlock:InvokeServer(ohVector31)
+
+
+
+small rock
+
+Small Boulder
+
+Copper Ore
+
+Gold Ore
+
+]]--
+
+
+
+
+
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+Library.ToggleKeybind = Options.MenuKeybind
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+ThemeManager:SetFolder('Pure')
+SaveManager:SetFolder('Pure/9903258006')
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+SaveManager:LoadAutoloadConfig()
