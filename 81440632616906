@@ -12,11 +12,8 @@ local Window = Library:CreateWindow({
     MenuFadeTime = 0.2
 })
 
-Library:Notify('Made by .visualization')
-Library:Notify('Made by .visualization')
-Library:Notify('Made by .visualization')
-Library:Notify('Made by .visualization')
-Library:Notify('Made by .visualization')
+
+
 
 task.wait(1)
 
