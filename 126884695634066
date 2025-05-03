@@ -1,0 +1,459 @@
+-- Grow a Garden 🍄
+
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+
+local Window = Library:CreateWindow({
+    Title = 'Pure | [🌱] Grow a Garden 🍄',
+    Center = true,
+    AutoShow = true,
+    TabPadding = 7,
+    MenuFadeTime = 0
+})
+
+
+
+local Tabs = {
+    Main = Window:AddTab('automatic'),
+    ['local'] = Window:AddTab('local player'),
+    ['misc'] = Window:AddTab('miscellaneous'),
+    ['UI Settings'] = Window:AddTab('settings'),
+}
+
+
+
+-- Auto Buy
+
+
+
+
+--function for auto buy seeds
+local listToAutoBuyFruit = nil
+
+local AutoBuyFruitEnabled = false
+
+local function startAutoBuyFruit()
+    task.spawn(function()
+        while AutoBuyFruitEnabled do
+            for _, seedName in ipairs(listToAutoBuyFruit) do
+                if not listToAutoBuyFruit then
+                    break
+                end
+                game.ReplicatedStorage.GameEvents.BuySeedStock:FireServer(seedName)
+                task.wait(0.1)
+            end
+            task.wait(0.1)
+        end
+    end)
+end
+
+
+
+
+
+local AutoBuyGroup = Tabs.Main:AddRightGroupbox('Auto Buy')
+
+
+
+
+
+AutoBuyGroup:AddToggle('AutoBuyToggle', {
+    Text = 'Buy Fruit',
+    Default = false,
+    Callback = function(Value)
+        AutoBuyFruitEnabled = Value
+        startAutoBuyFruit()
+    end
+})
+
+--dropdown
+AutoBuyGroup:AddDropdown('AutoBuyFruitName', {
+    Values = { 'Carrot', 'Strawberry', 'Blueberry', 'Orange Tulip', 'Tomato', 'Corn', 'Daffodil', 'Watermelon', 'Pumpkin', 'Apple', 'Bamboo', 'Coconut', 'Cactus', 'Dragon Fruit', 'Mango', 'Grape', 'Mushroom' },
+    Default = 0,
+    Multi = true, 
+
+    Text = 'Fruit',
+    Tooltip = 'Select Fruit to buy', 
+
+    Callback = function(Value)
+        local Values = {}
+        for Value, State in next, Value do
+            table.insert(Values, Value)
+        end
+        listToAutoBuyFruit = Values
+    end
+})
+
+
+
+
+
+
+
+
+-- Gear
+
+AutoBuyGroup:AddDivider()
+
+AutoBuyGroup:AddLabel('Auto Buy Gear(s)')
+
+local Watering_Can = false
+
+AutoBuyGroup:AddToggle('Watering_Can', {
+    Text = 'Watering Can',
+    Default = false,
+    Callback = function(Value)
+        Watering_Can = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while Watering_Can do
+                    local ohString1 = "Watering Can"
+                    game:GetService("ReplicatedStorage").GameEvents.BuyGearStock:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+
+local Trowel = false
+
+AutoBuyGroup:AddToggle('Trowel', {
+    Text = 'Trowel',
+    Default = false,
+    Callback = function(Value)
+        Trowel = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while Trowel do
+                    local ohString1 = "Trowel"
+                    game:GetService("ReplicatedStorage").GameEvents.BuyGearStock:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+local Basic_Sprinkler = false
+
+AutoBuyGroup:AddToggle('Basic_Sprinkler', {
+    Text = 'Basic Sprinkler',
+    Default = false,
+    Callback = function(Value)
+        Basic_Sprinkler = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while Basic_Sprinkler do
+                    local ohString1 = "Basic Sprinkler"
+                    game:GetService("ReplicatedStorage").GameEvents.BuyGearStock:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+
+local Advanced_Sprinkler = false
+
+AutoBuyGroup:AddToggle('Advanced_Sprinkler', {
+    Text = 'Advanced Sprinkler',
+    Default = false,
+    Callback = function(Value)
+        Advanced_Sprinkler = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while Advanced_Sprinkler do
+                    local ohString1 = "Advanced Sprinkler"
+                    game:GetService("ReplicatedStorage").GameEvents.BuyGearStock:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+local Godly_Sprinkler = false
+
+AutoBuyGroup:AddToggle('Godly_Sprinkler', {
+    Text = 'Godly Sprinkler',
+    Default = false,
+    Callback = function(Value)
+        Godly_Sprinkler = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while Godly_Sprinkler do
+                    local ohString1 = "Godly Sprinkler"
+                    game:GetService("ReplicatedStorage").GameEvents.BuyGearStock:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+
+local Lightning_Rod = false
+
+AutoBuyGroup:AddToggle('Lightning_Rod', {
+    Text = 'Lightning Rod',
+    Default = false,
+    Callback = function(Value)
+        Lightning_Rod = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while Lightning_Rod do
+                    local ohString1 = "Lightning Rod"
+                    game:GetService("ReplicatedStorage").GameEvents.BuyGearStock:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+
+
+local Master_Sprinkler = false
+
+AutoBuyGroup:AddToggle('Master_Sprinkler', {
+    Text = 'Master Sprinkler',
+    Default = false,
+    Callback = function(Value)
+        Lightning_Master_SprinklerRod = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while Master_Sprinkler do
+                    local ohString1 = "Master Sprinkler"
+                    game:GetService("ReplicatedStorage").GameEvents.BuyGearStock:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+
+
+
+-- UI
+
+local UIToggles = Tabs['misc']:AddRightGroupbox('User Interface')
+
+UIToggles:AddToggle('SeedShop', {
+    Text = 'Seed Shop',
+    Default = false,
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.Seed_Shop.Enabled = Value
+    end
+})
+
+UIToggles:AddToggle('GearShop', {
+    Text = 'Gear Shop',
+    Default = false,
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.Gear_Shop.Enabled = Value
+    end
+})
+
+UIToggles:AddToggle('DailyQuests_UI', {
+    Text = 'Daily Quests',
+    Default = false,
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.DailyQuests_UI.Enabled = Value
+    end
+})
+
+UIToggles:AddToggle('FreeSeedSack_UI', {
+    Text = 'Angry Plant',
+    Default = false,
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.FreeSeedSack_UI.Enabled = Value
+    end
+})
+
+
+
+
+game:GetService("Players").LocalPlayer.PlayerGui.FreeSeedSack_UI.Enabled = Value
+
+UIToggles:AddDivider()
+
+
+
+UIToggles:AddToggle('Easter_Shop', {
+    Text = 'Easter Shop',
+    Default = false,
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.Easter_Shop.Enabled = Value
+    end
+})
+
+UIToggles:AddToggle('TravellingMerchant_Shop', {
+    Text = 'Travelling Merchant Shop',
+    Default = false,
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.TravellingMerchant_Shop.Enabled = Value
+    end
+})
+
+
+-- Seed Exploit
+
+local DupeGroup = Tabs['misc']:AddLeftGroupbox('Basic Seed Pack Dupe')
+
+
+DupeGroup:AddButton({
+    Text = 'Dupe',
+    Func = function()
+        local Remote = game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("SeedPackGiverEvent")
+        for _ = 1,3500 do
+            Remote:FireServer("SubmitHeldPlant")
+        end
+    end,
+    DoubleClick = true,
+    Tooltip = 'starts the dupe'
+})
+
+
+local AutoClaimPremium = false
+
+DupeGroup:AddToggle('AutoClaimSeedPack', {
+    Text = 'Auto Claim Premium Seed Pack',
+    Default = false,
+    Callback = function(Value)
+        AutoClaimPremium = Value
+
+        if Value then
+            coroutine.wrap(function()
+                while AutoClaimPremium do
+                    local ohString1 = "ClaimPremiumPack"
+                    game:GetService("ReplicatedStorage").GameEvents.SeedPackGiverEvent:FireServer(ohString1)
+                    wait(1)
+                end
+            end)()
+        end
+    end
+})
+
+
+
+
+
+DupeGroup:AddLabel('discord.gg/****** for tutorial')
+
+
+local PlayerTools = Tabs['local']:AddRightGroupbox('Player Unit')
+
+
+
+-- Local player
+-- Services
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Variables
+local NoClip = false
+local ESpamming = false
+local spamSpeed = 0.01
+local spamConnection = nil
+
+-- ===== NoClip Bypass Setup =====
+local Rm = getrawmetatable(game)
+local NIndex = Rm.__newindex
+local Caller = checkcaller or is_protosmasher_caller
+
+setreadonly(Rm, false)
+Rm.__newindex = newcclosure(function(self, property, value)
+    if Caller() then
+        return NIndex(self, property, value)
+    end
+    if tostring(self) == "HumanoidRootPart" or tostring(self) == "Torso" then
+        if property == "CFrame" and self:IsDescendantOf(LocalPlayer.Character) then
+            return true
+        end
+    end
+    return NIndex(self, property, value)
+end)
+setreadonly(Rm, true)
+
+-- Keep NoClip active
+RunService.Stepped:Connect(function()
+    if NoClip and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+        pcall(function()
+            local char = LocalPlayer.Character
+            if char:FindFirstChild("Head") then char.Head.CanCollide = false end
+            if char:FindFirstChild("Torso") then char.Torso.CanCollide = false end
+            if char:FindFirstChild("HumanoidRootPart") then char.HumanoidRootPart.CanCollide = false end
+        end)
+    end
+end)
+
+
+PlayerTools:AddToggle('EspamToggle', {
+    Text = 'E Spam',
+    Default = false,
+    Tooltip = 'Rapidly presses E repeatedly',
+    Callback = function(Value)
+        ESpamming = Value
+        if ESpamming then
+            spamConnection = RunService.Heartbeat:Connect(function()
+                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+                task.wait(spamSpeed)
+                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, nil)
+                task.wait(spamSpeed)
+            end)
+        else
+            if spamConnection then
+                spamConnection:Disconnect()
+                spamConnection = nil
+            end
+        end
+    end
+})
+
+PlayerTools:AddToggle('BetterNoClipToggle', {
+    Text = 'Bypass NoClip',
+    Default = false,
+    Tooltip = 'NoClip with CFrame locking bypass',
+    Callback = function(Value)
+        NoClip = Value
+        warn("NoClip is now:", NoClip)
+    end
+})
+
+
+local LocalPlayer = Tabs['local']:AddRightGroupbox('Local Player')
+
+
+
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+Library.ToggleKeybind = Options.MenuKeybind
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+ThemeManager:SetFolder('Pure')
+SaveManager:SetFolder('Pure/126884695634066')
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+SaveManager:LoadAutoloadConfig()
