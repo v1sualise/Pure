@@ -1,0 +1,114 @@
+-- untitled drill game / 87700573492940
+
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+
+local Window = Library:CreateWindow({
+    Title = 'Pure | [⛏️] untitled drill game',
+    Center = true,
+    AutoShow = true,
+    TabPadding = 7,
+    MenuFadeTime = 0
+})
+
+
+
+local Tabs = {
+    Main = Window:AddTab('automatic'),
+    ['UI Settings'] = Window:AddTab('settings'),
+}
+
+local RemoteGroup = Tabs.Main:AddLeftGroupbox('remote(s)')
+
+local isSpamming = false
+
+RemoteGroup:AddToggle('AutoBuyToggle', {
+    Text = 'Auto Drill',
+    Default = false,
+    Tooltip = 'Mines really fast',
+    Callback = function(Value)
+        isSpamming = Value 
+        
+        if Value then
+
+            spawn(function()
+                while isSpamming do  
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.OreService.RE.RequestRandomOre:FireServer()
+                    wait(0.1)
+                end
+            end)
+        end
+    end
+})
+
+local isSpamming2 = false
+
+RemoteGroup:AddToggle('AutoSell', {
+    Text = 'Auto Sell',
+    Default = false,
+    Tooltip = 'Automaticly Selles EVERYTHING',
+    Callback = function(Value)
+        isSpamming2 = Value  
+        
+        if Value then
+          
+            spawn(function()
+                while isSpamming2 do  
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.OreService.RE.SellAll:FireServer()
+                    wait(5) 
+                end
+            end)
+        end
+    end
+})
+
+
+local MyDrills = workspace.Plots:GetChildren()[5].Drills:GetChildren()
+
+print(MyDrills)
+
+local DrillsInPlot = workspace.Plots.Plot.Drills[MyDrills]
+
+game:GetService("ReplicatedStorage").Packages.Knit.Services.PlotService.RE.CollectDrill:FireServer(DrillsInPlot)
+
+
+
+local UItypeshit = Tabs.Main:AddRightGroupbox('User InterFace')
+
+UItypeshit:AddToggle('AutoSell', {
+    Text = 'Handdrill Shop',
+    Default = false,
+    Tooltip = 'Opens/cloes UI',
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.Menu.CanvasGroup.HandDrills.Visible = Value
+    end
+})
+
+UItypeshit:AddToggle('AutoSell', {
+    Text = 'Drills Shop',
+    Default = false,
+    Tooltip = 'Opens/cloes UI',
+    Callback = function(Value)
+        game:GetService("Players").LocalPlayer.PlayerGui.Menu.CanvasGroup.Buy.Visible = Value
+    end
+})
+
+game:GetService("ReplicatedStorage").Packages.Knit.Services.OreService.RE.SellAll:FireServer()
+
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+Library.ToggleKeybind = Options.MenuKeybind
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+ThemeManager:SetFolder('Pure')
+SaveManager:SetFolder('Pure/87700573492940')
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+SaveManager:LoadAutoloadConfig()
