@@ -3,6 +3,7 @@ Hey everyone, just a quick heads-up — **I'm not the best script developer** ou
 
 # Changelogs:
 ```ansi
+[+] Added Blox Fruits
 [+] Added a Loadstring
 [+] Added Farmstead
 [+] Added Dig to Earth's CORE!
