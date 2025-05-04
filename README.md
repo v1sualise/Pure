@@ -22,7 +22,7 @@ Hey everyone, just a quick heads-up — **I'm not the best script developer** ou
 loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/heads/main/loadstring'))()
 ```
 # Pure.Lua for Blox Fruits 
-*I added Mobile Support* 
+*I added Mobile Support Only for blox fruits for now* 
 ```lua
 loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/heads/main/2753915549'))()
 ```
