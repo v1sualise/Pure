@@ -67,13 +67,7 @@ RemoteGroup:AddToggle('AutoSell', {
 })
 
 
-local MyDrills = workspace.Plots:GetChildren()[5].Drills:GetChildren()
 
-print(MyDrills)
-
-local DrillsInPlot = workspace.Plots.Plot.Drills[MyDrills]
-
-game:GetService("ReplicatedStorage").Packages.Knit.Services.PlotService.RE.CollectDrill:FireServer(DrillsInPlot)
 
 
 
