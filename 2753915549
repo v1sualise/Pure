@@ -12,6 +12,7 @@ local Window = WindUI:CreateWindow({
     Theme = "Dark",
     SideBarWidth = 190,
     HasOutline = false
+
 });
 
 Window:EditOpenButton({
