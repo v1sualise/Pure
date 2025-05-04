@@ -4,6 +4,7 @@ Hey everyone, just a quick heads-up — **I'm not the best script developer** ou
 # Changelogs:
 ```ansi
 [+] Added Blox Fruits
+[+] Added Mobile Support for Blox Fruits
 [+] Added a Loadstring
 [+] Added Farmstead
 [+] Added Dig to Earth's CORE!
@@ -20,6 +21,13 @@ Hey everyone, just a quick heads-up — **I'm not the best script developer** ou
 ```lua
 loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/heads/main/loadstring'))()
 ```
+# Pure.Lua for Blox Fruits 
+*I added Mobile Support* 
+```lua
+loadstring(game:HttpGet('https://raw.githubusercontent.com/wearebased/Pure/refs/heads/main/2753915549'))()
+```
+
+
 
 ## Contributors
 - wearebased: Main developer.
