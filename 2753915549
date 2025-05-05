@@ -1,4 +1,4 @@
-2753915549 / [☄️⭐GRAVITY] Blox Fruits
+
 
 local WindUI = (loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI")))();
 
@@ -16,7 +16,7 @@ local Window = WindUI:CreateWindow({
 });
 
 Window:EditOpenButton({
-    Title = "Open Chaos Hub",
+    Title = "Open Pure.lua",
     CornerRadius = UDim.new(0, 10),
     Draggable = false
 });
@@ -687,9 +687,9 @@ _G.Settings = {
 
 	if readfile and writefile and isfile and isfolder then
 
-		if not isfolder("Chaos Hub New") then
+		if not isfolder("Pure.lua new") then
 
-			makefolder("Chaos Hub New");
+			makefolder("Pure.lua new");
 
 		end;
 
@@ -4479,43 +4479,7 @@ spawn(function()
 
 end);
 
-DiscordServerParagraph = Tabs.MainTab:Paragraph({
 
-	Title = "Discord Server",
-
-	Desc = "Join discord server to get update info",
-
-	TextXAlignment = "Left",
-
-	Buttons = {
-
-		{
-
-			Title = "Copy Link",
-
-			Callback = function()
-
-				setclipboard("https://discord.gg/brrYwzpWg7");
-
-				WindUI:Notify({
-
-					Title = "Notification",
-
-					Content = "Copied",
-
-					Icon = "bell",
-
-					Duration = 3
-
-				});
-
-			end
-
-		}
-
-	}
-
-});
 
 LevelFarmSection = Tabs.MainTab:Section({
 
